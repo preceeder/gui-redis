@@ -1,7 +1,7 @@
 {
   "name": "RedisCli",
   "identifier": "com.preceeder.rediscli",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "out": "build",
   "icon": "resources/icon.png"
 }

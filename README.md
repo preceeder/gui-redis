@@ -2,7 +2,7 @@
 
 原生桌面 Redis 客户端。用 [MyGo](https://github.com/egoist/mygo) 做界面，不依赖 Electron / WebView。当前只做单机 Redis（Standalone）。
 
-版本 `0.1.0` · 包名 `com.preceeder.rediscli`
+版本 `0.1.1` · 包名 `com.preceeder.rediscli`
 
 ## 功能
 
