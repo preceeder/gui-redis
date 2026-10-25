@@ -12,8 +12,6 @@ import (
 func (a *app) view(c *ui.Context) {
 	t := c.Theme()
 	ui.Column(c).Fill().Children(func() {
-		a.toolbar(c, t)
-		ui.Divider(c)
 		ui.Split(c, &a.sidebarW, func() {
 			a.connPane(c, t)
 		}, func() {
@@ -48,29 +46,11 @@ func (a *app) view(c *ui.Context) {
 	a.syncDoneDialog(c)
 }
 
-func (a *app) toolbar(c *ui.Context, t *ui.Theme) {
-	ui.Row(c).Padding(10, 12).Gap(8).AlignItems(ui.Center).Children(func() {
-		ui.Text(c, "RedisCli").Bold()
-		ui.Spacer(c)
+func (a *app) statusBar(c *ui.Context, t *ui.Theme) {
+	ui.Row(c).Padding(6, 12).Gap(8).AlignItems(ui.Center).Children(func() {
 		if a.connecting || a.loadingKeys || a.loadingVal || a.loadingDBs || a.syncing {
 			ui.Spinner(c)
 		}
-		if a.connected() && a.info.Version != "" {
-			if a.inDB() {
-				ui.Text(c, fmt.Sprintf("Redis %s · db%d · %s · keys %d",
-					a.info.Version, a.activeDB, orDash(a.info.Memory), a.info.DBSize)).
-					FontSize(12).TextColor(t.TextMuted)
-			} else {
-				ui.Text(c, fmt.Sprintf("Redis %s · %s · %s",
-					a.info.Version, orDash(a.info.Role), orDash(a.info.Memory))).
-					FontSize(12).TextColor(t.TextMuted)
-			}
-		}
-	})
-}
-
-func (a *app) statusBar(c *ui.Context, t *ui.Theme) {
-	ui.Row(c).Padding(6, 12).Gap(8).AlignItems(ui.Center).Children(func() {
 		dot := t.TextMuted
 		switch {
 		case a.connected():
@@ -252,9 +232,3 @@ func clearOnBlank(e ui.Element, clear func()) {
 	}
 }
 
-func orDash(s string) string {
-	if s == "" {
-		return "-"
-	}
-	return s
-}

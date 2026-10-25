@@ -14,7 +14,7 @@ import (
 func TestAppViewEmpty(t *testing.T) {
 	a := newApp()
 	tt := ui.NewTester(a.view, 1180, 760)
-	if !tt.HasText("未连接") || !tt.HasText("新建连接") || !tt.HasText("RedisCli") || !tt.HasText("双击左侧连接") {
+	if !tt.HasText("未连接") || !tt.HasText("新建连接") || !tt.HasText("双击左侧连接") {
 		t.Fatalf("texts %q", tt.Texts())
 	}
 }
@@ -409,6 +409,33 @@ func TestDoubleClickConnectedShowsServerInfo(t *testing.T) {
 	}
 	if !tt.HasText("CLI") {
 		t.Fatal("server info should offer a CLI toggle")
+	}
+}
+
+func TestServerInfoLongValueStaysInColumn(t *testing.T) {
+	a := inDBApp()
+	long := strings.Repeat("abcdefghi/", 24)
+	a.info = redisx.Info{Sections: []redisx.InfoSection{
+		{Title: "服务器", Fields: []redisx.InfoField{{Label: "可执行文件", Value: long}}},
+		{Title: "客户端", Fields: []redisx.InfoField{{Label: "已连接", Value: "clients-ok"}}},
+	}}
+	tt := ui.NewTester(a.view, 900, 600)
+	box, ok := tt.Find(long)
+	if !ok {
+		t.Fatalf("missing long value in %q", tt.Texts())
+	}
+	if box.W > 280 {
+		t.Fatalf("long value should wrap inside its column, %#v", box)
+	}
+	if box.H < 40 {
+		t.Fatalf("long value should wrap to multiple lines, %#v", box)
+	}
+	other, ok := tt.Find("clients-ok")
+	if !ok {
+		t.Fatalf("missing other column in %q", tt.Texts())
+	}
+	if box.X < other.X && box.X+box.W > other.X+1 {
+		t.Fatalf("value %#v overlaps next column %#v", box, other)
 	}
 }
 

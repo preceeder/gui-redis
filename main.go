@@ -10,14 +10,7 @@ import (
 func main() {
 	a := newApp()
 	mygo.App.SetName("RedisCli")
-	mygo.App.SetMenu(mygo.NewMenu([]*mygo.MenuItem{
-		{Role: mygo.RoleAppMenu},
-		{Label: "文件", Submenu: []*mygo.MenuItem{
-			{Role: mygo.RoleClose},
-		}},
-		{Role: mygo.RoleEditMenu},
-		{Role: mygo.RoleWindowMenu},
-	}))
+	mygo.App.SetMenu(appMenu())
 	mygo.App.WhenReady(func() {
 		a.loadStore()
 		a.startWatchdog()

@@ -207,18 +207,18 @@ func (a *app) serverInfoBody(c *ui.Context, t *ui.Theme) {
 	}
 
 	drawBlock := func(b block) {
-		ui.Column(c).Gap(4).Children(func() {
+		ui.Column(c).Gap(4).FillWidth().MinWidth(0).Children(func() {
 			ui.Text(c, b.title).Bold()
 			for _, r := range b.rows {
-				ui.Row(c).Gap(12).Children(func() {
+				ui.Row(c).Gap(12).AlignItems(ui.Start).FillWidth().Children(func() {
 					ui.Text(c, r.k).Width(88).TextColor(t.TextMuted)
-					ui.Text(c, r.v).Grow(1)
+					ui.Text(c, r.v).Grow(1).MinWidth(0)
 				})
 			}
 		})
 	}
 
-	ui.Grid(c).Columns(2).Gap(16).AlignItems(ui.Start).Children(func() {
+	ui.Grid(c).Columns(2).Gap(16).AlignItems(ui.Start).JustifyItems(ui.Stretch).FillWidth().Children(func() {
 		for _, b := range blocks {
 			drawBlock(b)
 		}

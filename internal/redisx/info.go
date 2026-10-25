@@ -78,7 +78,7 @@ var infoSpecs = []infoSpec{
 	}},
 }
 
-// BuildInfo maps INFO fields into the toolbar snapshot and grouped sections.
+// BuildInfo maps INFO fields into the summary snapshot and grouped sections.
 func BuildInfo(fields map[string]string, dbsize int64) Info {
 	info := Info{
 		Version: fields["redis_version"],
